@@ -7,7 +7,7 @@ import (
 var totp = NewDefaultTOTP("4S62BZNFXXSZLCRO")
 
 func TestTOTP_At(t *testing.T) {
-	if totp.Now() != totp.At(currentTimestamp()) {
+	if totp.Now() != totp.At(int64(currentTimestamp())) {
 		t.Error("TOTP generate otp error!")
 	}
 }
@@ -18,14 +18,14 @@ func TestTOTP_NowWithExpiration(t *testing.T) {
 	if otp != totp.Now() {
 		t.Error("TOTP generate otp error!")
 	}
-	if totp.At(cts+30) != totp.At(int(exp)) {
+	if totp.At(int64(cts+30)) != totp.At(exp) {
 		t.Error("TOTP expiration otp error!")
 	}
 }
 
 func TestTOTP_Verify(t *testing.T) {
 	if !totp.Verify("179394", 1524485781) {
-		t.Error("verify faild")
+		t.Error("verify failed")
 	}
 }
 

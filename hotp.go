@@ -5,7 +5,7 @@ type HOTP struct {
 	OTP
 }
 
-func NewHOTP(secret string, digits int, hasher *Hasher) *HOTP {
+func NewHOTP(secret string, digits int64, hasher *Hasher) *HOTP {
 	otp := NewOTP(secret, digits, hasher)
 	return &HOTP{OTP: otp}
 
@@ -16,7 +16,7 @@ func NewDefaultHOTP(secret string) *HOTP {
 }
 
 // Generates the OTP for the given count.
-func (h *HOTP) At(count int) string {
+func (h *HOTP) At(count int64) string {
 	return h.generateOTP(count)
 }
 
@@ -27,7 +27,7 @@ params:
     otp:   the OTP to check against
     count: the OTP HMAC counter
 */
-func (h *HOTP) Verify(otp string, count int) bool {
+func (h *HOTP) Verify(otp string, count int64) bool {
 	return otp == h.At(count)
 }
 
@@ -45,14 +45,14 @@ params:
 
 returns: provisioning URI
 */
-func (h *HOTP) ProvisioningUri(accountName, issuerName string, initialCount int) string {
+func (h *HOTP) ProvisioningUri(accountName, issuerName string, initialCount int64) string {
 	return BuildUri(
 		OtpTypeHotp,
 		h.secret,
 		accountName,
 		issuerName,
 		h.hasher.HashName,
-		initialCount,
-		h.digits,
+		int(initialCount),
+		int(h.digits),
 		0)
 }

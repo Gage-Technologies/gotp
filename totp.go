@@ -5,10 +5,10 @@ import "time"
 // time-based OTP counters.
 type TOTP struct {
 	OTP
-	interval int
+	interval int64
 }
 
-func NewTOTP(secret string, digits, interval int, hasher *Hasher) *TOTP {
+func NewTOTP(secret string, digits int64, interval int64, hasher *Hasher) *TOTP {
 	otp := NewOTP(secret, digits, hasher)
 	return &TOTP{OTP: otp, interval: interval}
 }
@@ -18,13 +18,13 @@ func NewDefaultTOTP(secret string) *TOTP {
 }
 
 // Generate time OTP of given timestamp
-func (t *TOTP) At(timestamp int) string {
+func (t *TOTP) At(timestamp int64) string {
 	return t.generateOTP(t.timecode(timestamp))
 }
 
 // Generate the current time OTP
 func (t *TOTP) Now() string {
-	return t.At(currentTimestamp())
+	return t.At(int64(currentTimestamp()))
 }
 
 // Generate the current time OTP and expiration time
@@ -32,7 +32,7 @@ func (t *TOTP) NowWithExpiration() (string, int64) {
 	interval64 := int64(t.interval)
 	timeCodeInt64 := time.Now().Unix() / interval64
 	expirationTime := (timeCodeInt64 + 1) * interval64
-	return t.generateOTP(int(timeCodeInt64)), expirationTime
+	return t.generateOTP(timeCodeInt64), expirationTime
 }
 
 /*
@@ -42,7 +42,7 @@ params:
     otp:         the OTP to check against
     timestamp:   time to check OTP at
 */
-func (t *TOTP) Verify(otp string, timestamp int) bool {
+func (t *TOTP) Verify(otp string, timestamp int64) bool {
 	return otp == t.At(timestamp)
 }
 
@@ -67,10 +67,10 @@ func (t *TOTP) ProvisioningUri(accountName, issuerName string) string {
 		issuerName,
 		t.hasher.HashName,
 		0,
-		t.digits,
-		t.interval)
+		int(t.digits),
+		int(t.interval))
 }
 
-func (t *TOTP) timecode(timestamp int) int {
-	return int(timestamp / t.interval)
+func (t *TOTP) timecode(timestamp int64) int64 {
+	return timestamp / t.interval
 }
