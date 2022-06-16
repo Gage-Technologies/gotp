@@ -12,12 +12,12 @@ GOTP was inspired by [PyOTP][PyOTP].
 ## Installation
 
 ```
-$ go get github.com/xlzd/gotp
+$ go get github.com/gage-technologies/gotp
 ```
 
 ## Usage
 
-Check API docs at https://godoc.org/github.com/xlzd/gotp
+Check API docs at https://godoc.org/github.com/gage-technologies/gotp
 
 ### Time-based OTPs
 
@@ -88,7 +88,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/xlzd/gotp"
+	"github.com/gage-technologies/gotp"
 )
 
 func main() {
@@ -106,4 +106,4 @@ GOTP is licensed under the [MIT License][License]
 [RFC 4226]: https://tools.ietf.org/html/rfc4226 "RFC 4226"
 [RFC 6238]: https://tools.ietf.org/html/rfc6238 "RFC 6238"
 [PyOTP]: https://github.com/pyotp/pyotp
-[License]: https://github.com/xlzd/gotp/blob/master/LICENSE
+[License]: https://github.com/gage-technologies/gotp/blob/master/LICENSE

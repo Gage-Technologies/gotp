@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/xlzd/gotp"
+	"github.com/gage-technologies/gotp"
 )
 
 func main() {
